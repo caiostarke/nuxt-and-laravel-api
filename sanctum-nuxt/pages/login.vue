@@ -7,34 +7,17 @@ import { ref } from 'vue';
   })
 
   async function handleLogin() {
-    await useFetch('http://localhost:8000/sanctum/csrf-cookie', {
-      credentials: 'include',
-      watch: false,
-    });
+    await useApiFetch('/sanctum/csrf-cookie');
 
-    const token = useCookie('XSRF-TOKEN') 
 
-    await useFetch('http://localhost:8000/login', {
+    await useApiFetch('/login', {
       method: 'POST',
-      credentials: 'include',
-      watch: false,
       body: form.value,
-      headers: {
-        'X-XSRF-TOKEN': token.value as string,
-      },
     });
 
-    const { data } = await useFetch('http://localhost:8000/api/user', {
-      credentials: 'include',
-      watch: false,
-      headers: {
-        'X-XSRF-TOKEN': token.value as string,
-      },
-    });
+    const { data } = await useApiFetch('/api/user');
     
     console.log(data)
-
-
   }
 
 </script>
