@@ -1,6 +1,16 @@
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+  const auth = useAuthStore();
+
+  async function handleLogout() {
+    await auth.logout();
+  }
+</script>
 
 <template>
+  <button v-if="auth.isLoggedIn" @click="handleLogout"> Logout   </button>
+  <pre>
+    {{ auth.user }}
+  </pre>  
   <div>
     <ul>
       <li> <NuxtLink to="/">Home</NuxtLink></li>

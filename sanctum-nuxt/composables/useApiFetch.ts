@@ -9,6 +9,13 @@ export function useApiFetch<T> (url: string | (() => string), options: UseFetchO
     headers['X-XSRF-TOKEN'] = token.value as string;
   }
 
+  if (process.server) {
+    headers = {
+      ...headers,
+      ...useRequestHeaders(['referer', 'cookie']),
+    }
+  }
+
   return useFetch("http://localhost:8000" + url, {
   credentials: 'include',
   watch:false,  

@@ -1,23 +1,17 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
+import { useAuthStore } from '~/stores/useAuthStore';
 
   const form = ref({
     email: "test@example.com",
     password: "password",
   })
 
-  async function handleLogin() {
-    await useApiFetch('/sanctum/csrf-cookie');
-
-
-    await useApiFetch('/login', {
-      method: 'POST',
-      body: form.value,
-    });
-
-    const { data } = await useApiFetch('/api/user');
+  const auth = useAuthStore();
+  async function handleLogin() {  
+    const { error } = await auth.login(form.value)
     
-    console.log(data)
+    console.log(error)
   }
 
 </script>
